@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home家PAGE</title>
+    <link rel="stylesheet" href="styles.css">
+    <style type="text/css">
+        .鼠标 {
+            display: none;
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            margin: -15px 0 0 -15px;
+            background: rgba(37, 0, 255, 0.3);
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+        }
+    </style>
+
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            margin-right: 0;
+            margin-left: 21px;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 1195px;
+            height:700px;
+            justify-content: center;
+            align-items: center;
+            
+        }
+
+        .shell {
+            width: 1195px;
+            height: 700px;
+            background: #ffff;
+            position: relative;
+        }
+
+        .head {
+            height: 340px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .head::before {
+            content: '';
+            width: 1195px;
+            height: 100%;
+            position: absolute;
+            background: url("../img/雯淇雪地.png");
+            background-size: cover;
+            z-index: -1;
+            transform: skewY(-4deg);
+            transform-origin: 0 0;
+        }
+
+        .cover {
+            position: absolute;
+            top: 190px;
+            left: 25px;
+            width: 220px;
+            z-index: 2;
+            border: 2px solid #EBDAC8;
+            border-radius: 50%;
+            background-image: url(../img/星空.png);
+            box-shadow: 0 5px 10px #EBDAC8;
+        }
+
+        .data {
+            padding: 190px 0 0 280px;
+            text-shadow: 0 0 20px #0000;
+
+        }
+
+        .data .title1 {
+            color: white;
+            font-size: 30px;
+            font: 900 40px '';
+            margin-bottom: 5px;
+            position: relative;
+        }
+
+        .data .title1 span {
+            position: absolute;
+            top: 18px;
+            margin-left: 12px;
+            background: #EBD9CB;
+            border-radius: 5px;
+            color: #4A475C;
+            font-size: 14px;
+            padding: 0px 4px;
+        }
+
+        .data .title1 span1 {
+            position: absolute;
+            top: 18px;
+            margin-left: 100px;
+            background: #EBD9CB;
+            border-radius: 5px;
+            color: #4A475C;
+            font-size: 15px;
+            padding: 0px 4px;
+        }
+
+        .data .title2 {
+            color: #ffffff;
+            font-size: 20px;
+            font: 900 20px '';
+        }
+
+        .foot {
+            line-height: 40px;
+            color: #4A475C;
+            margin-top: 30px;
+            font-size: 15px;
+        }
+
+        .foot strong {
+            font-size: 20px;
+            color: #798ca3;
+        }
+
+        .tags {
+            padding-left: 1px;
+            padding-top: 100px;
+            width: 300px;
+            float: left;
+            text-align: center;
+        }
+
+        .tag {
+            background-image: url(../img/星空.png);
+            background: #4a5286df;
+            color: #ffffff;
+            border-radius: 110px;
+            padding: 3px 10px;
+            font-size: 25px;
+            line-height: 50px;
+            cursor: pointer;
+
+        }
+
+        .DYGAME{
+            position:absolute;
+            margin-left: 21px;
+            height: 0px;
+            
+        }
+
+
+        
+    </style>
+
+
+
+
+
+</head>
+
+<body>
+    <div class="shell">
+        <img src="../img/叶子画头像.jpg" width="100px" height="230px" class="cover">
+        <div class="head">
+            <div class="data">
+                <div class="title1">影子私厨<span>L-shadow-</span>
+                    <span1>请好好选课-影子版</span1>
+                </div>
+                <div class="title2">雯淇妈妈的小厨房
+                </div>
+            </div>
+        </div>
+        <div class="foot">
+            <div class="tags">
+                <span class="tag">小说</a></span>
+                <span class="tag">漫画</span>
+                <span class="tag">漫剧</span>
+                <span class="tag">动画</span>
+                <span class="tag">游戏</span>
+            </div>
+            <div class="introduce">
+                <h1>关于小厨房</h1>
+                <br>
+                <p>
+                    Hello雯淇妈妈们, 这里影子, 一个24年3月入坑的委屈鬼, 偶尔产产小粮。
+                <p><strong>雯淇妈妈的小厨房</strong>致力于提供WQG优秀的精神食粮,
+                    产出内容的质量是我们一直所追求的目标。我们相信在围裙妈妈的小厨房里您一定可以找寻到不一样的快乐。
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="DYGAME">
+        <iframe height="200px" width="1195" src='../游戏/椰奶跳跳.html' frameborder=0 'allowfullscreen'></iframe> 
+    
+    </div>
+
+</body>
+
+<body>
+    <div id="div" class="鼠标">
+    </div>
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+<script type="text/javascript">
+    window.onload = function () {
+        var oDiv = document.getElementById("div");
+        window.onmousemove = function (ev) {
+            var ev = ev || window.event;
+            var ofLeft = document.documentElement.offsetLeft || document.body.offsetLeft;
+            var ofTop = document.documentElement.offsetTop || document.body.offsetTop;
+            var oLeft = ev.clientX + ofLeft;
+            var oTop = ev.clientY + ofTop;
+            oDiv.style.display = "block";
+            oDiv.style.left = oLeft + "px";
+            oDiv.style.top = oTop + "px";
+        }
+
+    }
+</script>

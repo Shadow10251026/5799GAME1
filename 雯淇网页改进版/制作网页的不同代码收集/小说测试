@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小说存储</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .novel-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: space-around;
+            padding: 20px;
+        }
+
+        .novel-card {
+            width: 300px;
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .novel-img {
+            width: 100%;
+            height: auto;
+        }
+
+        .novel-info {
+            padding: 15px;
+        }
+
+        .novel-info h3 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .novel-info p {
+            font-size: 1em;
+            margin-bottom: 15px;
+            color: #666;
+        }
+
+        .like-btn {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            position: relative;
+        }
+
+        .like-icon {
+            font-size: 40px;
+            color: #ddd;
+            margin-right: 8px;
+            padding: 8px;
+            transition: transform 0.2s ease-in-out, color 0.3s, border-color 0.3s;
+        }
+
+        .like-btn.active .like-icon {
+            color: red;
+            border-color: red;
+            transform: scale(1.3);
+        }
+
+        .like-btn:hover .like-icon {
+            color: #ff6666;
+            border-color: #ff6666;
+            transform: scale(1.1);
+        }
+
+        /* 长按时显示大爱心动画 */
+        .long-press .like-icon {
+            animation: heartBeat 0.6s infinite alternate;
+        }
+
+        @keyframes heartBeat {
+            0% {
+                transform: scale(1);
+            }
+
+            100% {
+                transform: scale(1.5);
+            }
+        }
+
+        .novel-link {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .novel-container {
+                justify-content: flex-start;
+            }
+
+            .novel-card {
+                width: 100%;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .novel-container {
+                flex-wrap: nowrap;
+            }
+
+            .novel-card {
+                width: 30%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="novel-container">
+        <!-- 第一个小说 -->
+        <div class="novel-card">
+            <img src="../img/雯淇雪地.png" alt="Novel 1" class="novel-img">
+            <div class="novel-info">
+                <h3>记录：我们的第一次看雪</h3>
+                <p>现实向｜从一十七到一二二，以文字的形式，想象她们在哈尔滨，记录第一次看雪的故事。</p>
+            </div>
+            <a href="novel1.html" class="novel-link"></a>
+            <button class="like-btn" id="like-btn-1" onmousedown="startLongPress(1)" onmouseup="endLongPress(1)"
+                onmouseleave="endLongPress(1)" onclick="likeNovel(1, event)">
+                <span id="like-icon-1" class="like-icon">♡</span>
+                <span id="like-count-1">0</span>
+            </button>
+        </div>
+
+        <!-- 第二个小说 -->
+        <div class="novel-card">
+            <img src="novel2.jpg" alt="Novel 2" class="novel-img">
+            <div class="novel-info">
+                <h3>小说名称 2</h3>
+                <p>这是小说2的简介。点击查看完整内容。</p>
+            </div>
+            <a href="novel2.html" class="novel-link"></a>
+            <button class="like-btn" id="like-btn-2" onmousedown="startLongPress(2)" onmouseup="endLongPress(2)"
+                onmouseleave="endLongPress(2)" onclick="likeNovel(2, event)">
+                <span id="like-icon-2" class="like-icon">♡</span>
+                <span id="like-count-2">0</span>
+            </button>
+        </div>
+
+        <!-- 第三个小说 -->
+        <div class="novel-card">
+            <img src="novel3.jpg" alt="Novel 3" class="novel-img">
+            <div class="novel-info">
+                <h3>小说名称 3</h3>
+                <p>这是小说3的简介。点击查看完整内容。</p>
+            </div>
+            <a href="novel3.html" class="novel-link"></a>
+            <button class="like-btn" id="like-btn-3" onmousedown="startLongPress(3)" onmouseup="endLongPress(3)"
+                onmouseleave="endLongPress(3)" onclick="likeNovel(3, event)">
+                <span id="like-icon-3" class="like-icon">♡</span>
+                <span id="like-count-3">0</span>
+            </button>
+        </div>
+
+        <!-- 第四个小说 -->
+        <div class="novel-card">
+            <img src="novel4.jpg" alt="Novel 4" class="novel-img">
+            <div class="novel-info">
+                <h3>小说名称 4</h3>
+                <p>这是小说4的简介。点击查看完整内容。</p>
+            </div>
+            <a href="novel4.html" class="novel-link"></a>
+            <button class="like-btn" id="like-btn-4" onmousedown="startLongPress(4)" onmouseup="endLongPress(4)"
+                onmouseleave="endLongPress(4)" onclick="likeNovel(4, event)">
+                <span id="like-icon-4" class="like-icon">♡</span>
+                <span id="like-count-4">0</span>
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        // 初始化点赞数据
+        let storedLikes = JSON.parse(localStorage.getItem('likes')) || {1: 0, 2: 0, 3: 0, 4: 0};  // 默认点赞数为0
+        let likedStatus = JSON.parse(localStorage.getItem('likedStatus')) || {1: false, 2: false, 3: false, 4: false};  // 默认状态为未点赞
+
+        // 更新页面上的点赞次数  
+        function updateLikeCount() {  
+            for (let novelId in storedLikes) {  
+                document.getElementById(`like-count-${novelId}`).innerText = storedLikes[novelId];  
+                // 如果已经点赞，将爱心图标标记为活跃  
+                if (likedStatus[novelId]) {  
+                    document.getElementById(`like-icon-${novelId}`).classList.add('active');  
+                } else {  
+                    document.getElementById(`like-icon-${novelId}`).classList.remove('active'); // 确保未点赞时移除活跃状态  
+                }  
+            }  
+        }  
+
+        // 更新点赞状态  
+        function likeNovel(novelId, event) {  
+            // 如果已经点赞，不做任何操作  
+            if (likedStatus[novelId]) {  
+                return;  
+            }  
+
+            // 阻止事件冒泡，避免跳转  
+            event.stopPropagation();  
+            event.preventDefault(); // 防止链接跳转  
+
+            // 增加点赞数  
+            storedLikes[novelId]++;  
+            console.log(`Novel ${novelId} liked: ${storedLikes[novelId]}`); // 调试信息  
+
+            // 更新点赞状态  
+            likedStatus[novelId] = true;  
+
+            // 更新localStorage中的点赞数据和点赞状态  
+            localStorage.setItem('likes', JSON.stringify(storedLikes));  
+            localStorage.setItem('likedStatus', JSON.stringify(likedStatus));  
+
+            // 更新页面上的点赞数  
+            updateLikeCount(); // 直接更新页面  
+
+            // 更新爱心图标颜色  
+            const likeButton = document.getElementById(`like-icon-${novelId}`);  
+            likeButton.classList.add('active');  // 切换点赞状态  
+        }  
+
+        // 页面加载时更新显示  
+        window.onload = function () {  
+            updateLikeCount();  
+            console.log('Likes:', storedLikes); // 调试信息  
+            console.log('Liked Status:', likedStatus); // 调试信息  
+        };
+    </script>
+</body>
+
+</html>

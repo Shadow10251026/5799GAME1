@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>雯淇豆椰小游戏</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #494286, );
+      color: #333;
+      animation: fadeIn 1s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    header {
+      background: linear-gradient(135deg, #947cb9, #ffffff);
+      padding: 1.5rem;
+      text-align: center;
+      color: white;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+
+    .search-bar {
+      margin: 1.5rem auto;
+      text-align: center;
+    }
+
+    .search-bar input {
+      padding: 0.6rem 1rem;
+      width: 60%;
+      max-width: 400px;
+      border-radius: 12px;
+      border: 2px solid #7059b6;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    .category-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+
+    .category-buttons button {
+      background: white;
+      border: 2px solid #ffffff;
+      color: #6a59b6;
+      padding: 0.6rem 1.2rem;
+      border-radius: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .category-buttons button.active,
+    .category-buttons button:hover {
+      background: linear-gradient(135deg, #5f59b6, #5944ad);
+      color: white;
+    }
+
+    .game-list {
+        display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1.5rem;
+      padding: 1rem 2rem;
+      transition: all 0.3s ease;
+    }
+
+    .game-card {
+  background: linear-gradient(135deg, rgba(92, 89, 182, 0.8), rgba(164, 148, 223, 0.8));
+  border-radius: 16px;
+  padding: 0.7rem;
+  color: white;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  animation: cardEnter 0.5s ease forwards;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: transform 0.3s;
+}
+
+    
+
+    .game-card:hover {
+      transform: scale(1.05);
+    }
+
+    @keyframes cardEnter {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .game-placeholder {
+      width: 100%;
+      height: 150px;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+    }
+
+    .game-title {
+      font-size: 1.3rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .game-desc {
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    .play-button {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      background-color: white;
+      color: #8473aa;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .play-button:hover {
+      background-color: #f0e6f6;
+    }
+
+    @media (max-width: 600px) {
+      .search-bar input {
+        width: 80%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>雯淇豆椰甜品站</h1>
+    <p>委屈鬼们，请选择你喜欢的分类，或直接搜索游戏名</p>
+  </header>
+
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="搜索游戏..." oninput="filterGames()" />
+  </div>
+
+  <div class="category-buttons">
+    <button class="active" onclick="showCategory('normal', this)">普通游戏</button>
+    <button onclick="showCategory('anime', this)">纸片人游戏</button>
+  </div>
+
+
+  <div class="game-list" id="gameList">
+    <!-- 游戏卡片将动态插入 -->
+  </div>
+
+  <script>
+    const games = {
+      normal: [
+        { title: "雯淇拼图",desc:"快来把小雯淇淇拼完整吧！"
+        ,img: "../img2 （头像）/拼图.png",
+        },
+        { title: "小豆椰椰跳跳", desc: "帮助小豆椰椰找妈妈" },
+        { title: "贪吃猫与贪吃人", desc: "想亲自组装一条豆椰雯淇贪吃蛇吗" },
+        { title: "连连看：雯淇版", desc: "小豆椰椰表情包连连看" },
+        { title: "豆椰躲避球", desc: "左右移动，避免小豆椰椰被雪球击中！" },
+        { title: "雯淇找不同", desc: "偷偷藏了点豆椰，你能找到吗？" }
+      ],
+      anime: [
+        { title: "冲喜", desc: "制片人游戏制作中。" },
+        { title: "黑帮大佬x千金大小姐", desc: "成为徐老大的小弟，办事嗑糖两不误～" },
+        { title: "更多雯淇故事敬请期待" }
+      ]
+    };
+
+    let currentCategory = 'normal';
+
+    function showCategory(category, btn) {
+      currentCategory = category;
+      document.querySelectorAll('.category-buttons button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderGames();
+    }
+
+    function filterGames() {
+      const keyword = document.getElementById("searchInput").value.toLowerCase();
+      renderGames(keyword);
+    }
+
+    function renderGames(filter = '') {
+      const list = document.getElementById('gameList');
+      list.innerHTML = '';
+
+      games[currentCategory].forEach((game, i) => {
+        if (!game.title.toLowerCase().includes(filter)) return;
+
+        const card = document.createElement('div');
+        card.className = 'game-card';
+        card.style.animationDelay = `${i * 0.05}s`; // stagger animation
+
+        card.innerHTML = `
+          <div class="game-placeholder"></div>
+          <div class="game-title">${game.title}</div>
+          <div class="game-desc">${game.desc}</div>
+          <button class="play-button">开始游戏</button>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    // 默认加载普通游戏
+    renderGames();
+  </script>
+
+</body>
+</html>

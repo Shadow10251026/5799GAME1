@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+           
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 50px auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            font-size: 36px;
+            color: #13285c;
+        }
+        .cards {
+            display: grid;
+            grid-template-columns: 1fr; /* 第一排占一整行 */
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .big-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            padding: 20px;
+            transition: transform 0.3s ease;
+            grid-column: span 1; /* 第一排占用整个宽度 */
+            border: 3px solid #003366; /* Deep blue border */
+        }
+        .big-card:hover {
+            transform: scale(1.05); /* 添加悬停效果 */
+        }
+        .card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            padding: 20px;
+            transition: transform 0.3s ease;
+            border: 3px solid #003366; /* Deep blue border */
+        }
+        .card:hover {
+            transform: scale(1.05); /* 悬停效果 */
+        }
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+            object-fit: cover;
+        }
+        .name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #474545;
+        }
+        .position {
+            font-size: 16px;
+            color: #777;
+            margin-bottom: 10px;
+        }
+        .contact {
+            font-size: 14px;
+            color: #555;
+        }
+        /* 第二排的排列方式：两列 */
+        .second-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 每排显示两列 */
+            gap: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>ABOUT US</h1>
+        </div>
+        <div class="cards">
+            <!-- First Row (Big Card) -->
+            <div class="big-card">
+                <img src="../img2 （头像）/叶子画头像.jpg" alt="Avatar 1" class="avatar">
+                <div class="name">影子</div>
+                <div class="position">小厨房老板，设计师，工程师，主厨</div>
+                <div class="contact">影子-土豆椰奶版｜L-shadow-</div>
+            </div>
+        </div>
+        
+        <!-- Second Row (10 Cards, 5 per Column) -->
+        <div class="second-row">
+            <!-- First Column -->
+            <div class="card">
+                <img src="../img2 （头像）/小明.jpg" alt="Avatar 2" class="avatar">
+                <div class="name">明缚言</div>
+                <div class="position">素材提供者，影子的小秘书</div>
+                <div class="contact"></div>
+            </div>
+            <div class="card">
+                <img src="../img2 （头像）/瓜子.jpg" alt="Avatar 3" class="avatar">
+                <div class="name">瓜子</div>
+                <div class="position">漫画灵感提供, 灵感代表《叫姐姐》</div>
+                <div class="contact"></div>
+            </div>
+
+            <div class="card">
+                <img src="../img2 （头像）/猫猫拯救世界了.jpg" alt="Avatar 6" class="avatar">
+                <div class="name">猫猫拯救世界了</div>
+                <div class="position">网站测试员，提供超级好看的返图🤩</div>
+                <div class="contact"> </div>
+            </div>
+
+            <div class="card">
+                <img src="../img2 （头像）/椰奶顿土豆.jpg" alt="Avatar 5" class="avatar">
+                <div class="name">椰奶炖土豆</div>
+                <div class="position">网站测试员，漫剧背景音</div>
+                <div class="contact"></div>
+            </div>
+            
+            <div class="card">
+                <img src="../img2 （头像）/某某鱼.jpg" alt="Avatar 4" class="avatar">
+                <div class="name">某某鱼</div>
+                <div class="position">素材提供者/网站测试员</div>
+                <div class="contact"></div>
+            </div>
+
+           
+            <div class="card">
+                <img src="../img2 （头像）/鱿鱼.jpg" alt="Avatar 9" class="avatar">
+                <div class="name">我叫麻辣鱿鱼徐</div>
+                <div class="position">素材提供者/网站测试员</div>
+                <div class="contact"></div>
+            </div>
+
+            <!-- Second Column -->
+            <div class="card">
+                <img src="../img2 （头像）/侦探.jpg" alt="Avatar 7" class="avatar">
+                <div class="name">侦探</div>
+                <div class="position">网站测试员</div>
+                <div class="contact"></div>
+            </div>
+
+            <div class="card">
+                <img src="../img2 （头像）/我丢嘎嘎.jpg" alt="Avatar 8" class="avatar">
+                <div class="name">我丢嘎嘎</div>
+                <div class="position">网站测试员</div>
+                <div class="contact"></div>
+            </div>
+   
+            <div class="card">
+                <img src="../img2 （头像）/琪琪.jpg" alt="Avatar 10" class="avatar">
+                <div class="name">鸽子王国的琪琪</div>
+                <div class="position">网站测试员</div>
+                <div class="contact"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>拼图游戏 - 多关卡</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<style>
+    body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+  background-color: #696AAD;
+  margin: 0;
+  padding: 100px 100px;
+}
+
+h1 {
+  font-size: 2.2em;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+#puzzle {
+  margin: 20px auto;
+  display: grid;
+  border: 0px solid #e7e7e7;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+.tile {
+  background-image: url('../img/曼陀罗.jpg'); /* 可换成你的图片 */
+  background-size: cover;
+  border: 1px solid #ffffff;
+  cursor: pointer;
+
+  border-radius: 5px;
+}
+
+
+p {
+  font-size: 1.1em;
+  color: #ffffff;
+}
+
+#level, #size {
+  font-weight: bold;
+  color: #9affc9;
+}
+
+#message {
+  font-size: 1.3em;
+  color: #ffffff;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+</style>
+<body>
+  <h1>雯淇豆椰拼拼乐</h1>
+  <p>当前关卡：<span id="level">1</span>（<span id="size">3x3</span>）</p>
+  <div id="puzzle"></div>
+  <p id="message"></p>
+  <script src="script.js"></script>
+</body>
+</html>
+
+<script>
+const puzzle = document.getElementById("puzzle");
+const levelDisplay = document.getElementById("level");
+const sizeDisplay = document.getElementById("size");
+const message = document.getElementById("message");
+
+// 你可以在这里添加多张图片路径
+const images = [
+  "../拼图｜图/拼图游戏1.jpg",
+  "../img/运动会牵手.jpg",
+  "../img/雯淇结婚头像.png",
+  "../img/曼陀罗.jpg"
+];
+
+let usedImages = [];
+let currentImage = "";
+let level = 1;
+let gridSize = 2;
+let tiles = [];
+let firstClicked = null;
+
+function pickRandomImage() {
+  const available = images.filter(img => !usedImages.includes(img));
+  if (available.length === 0) {
+    message.textContent = "🎉 所有图片已完成挑战！游戏结束";
+    return null;
+  }
+  const random = available[Math.floor(Math.random() * available.length)];
+  usedImages.push(random);
+  return random;
+}
+
+function startLevel() {
+  if (usedImages.length === images.length) {
+    return;
+  }
+
+  gridSize = level + 1;
+  levelDisplay.textContent = level;
+  sizeDisplay.textContent = `${gridSize}x${gridSize}`;
+  message.textContent = '';
+
+  const img = pickRandomImage();
+  if (!img) return;
+
+  currentImage = img;
+  createTiles();
+  shuffle();
+}
+
+function createTiles() {
+  puzzle.innerHTML = '';
+  tiles = [];
+
+  puzzle.style.width = `${gridSize * 100}px`;
+  puzzle.style.height = `${gridSize * 100}px`;
+  puzzle.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+  puzzle.style.gridTemplateRows = `repeat(${gridSize}, 1fr)`;
+
+  const total = gridSize * gridSize;
+
+  for (let i = 0; i < total; i++) {
+    const tile = document.createElement("div");
+    tile.className = "tile";
+    tile.dataset.index = i;
+
+    const x = i % gridSize;
+    const y = Math.floor(i / gridSize);
+    tile.style.width = `${100}px`;
+    tile.style.height = `${100}px`;
+    tile.style.backgroundImage = `url('${currentImage}')`;
+    tile.style.backgroundSize = `${gridSize * 100}px ${gridSize * 100}px`;
+    tile.style.backgroundPosition = `-${x * 100}px -${y * 100}px`;
+
+    tile.addEventListener("click", onTileClick);
+    tiles.push(tile);
+  }
+}
+
+function shuffle() {
+  const shuffled = [...tiles];
+  shuffled.sort(() => Math.random() - 0.5);
+  puzzle.innerHTML = '';
+  shuffled.forEach(tile => puzzle.appendChild(tile));
+}
+
+function onTileClick(e) {
+  const tile = e.currentTarget;
+  if (!firstClicked) {
+    firstClicked = tile;
+    tile.style.border = "2px solid red";
+  } else if (tile === firstClicked) {
+    tile.style.border = "1px solid #ccc";
+    firstClicked = null;
+  } else {
+    swapTiles(firstClicked, tile);
+    firstClicked.style.border = "1px solid #ccc";
+    firstClicked = null;
+    checkWin();
+  }
+}
+
+function swapTiles(tile1, tile2) {
+  const temp = document.createElement("div");
+  puzzle.replaceChild(temp, tile1);
+  puzzle.replaceChild(tile1, tile2);
+  puzzle.replaceChild(tile2, temp);
+}
+
+function checkWin() {
+  const allTiles = Array.from(puzzle.children);
+  const isCorrect = allTiles.every((tile, i) => {
+    return parseInt(tile.dataset.index) === i;
+  });
+  if (isCorrect) {
+    message.textContent = `恭喜这位委屈鬼完成第 ${level} 关！准备进入下一关...`;
+    setTimeout(() => {
+      level++;
+      startLevel();
+    }, 1500);
+  }
+}
+
+startLevel();
+
+
+</script>

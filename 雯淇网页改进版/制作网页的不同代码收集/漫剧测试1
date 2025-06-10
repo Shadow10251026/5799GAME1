@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>多个动画时间轴</title>
+  <link rel="stylesheet" href="styles.css">
+
+
+  <style>
+    /* 基础布局 */
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 10px 20px;
+  z-index: 10;
+}
+
+.navbar ul {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar ul li {
+  margin: 0 20px;
+}
+
+.navbar ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.2rem;
+  transition: color 0.3s;
+}
+
+.navbar ul li a:hover {
+  color: #f39c12;
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('your-background-image.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* 黑色蒙版 */
+}
+
+.animation-section {
+  padding-top: 80px;
+  padding-bottom: 60px;
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: #f8f8f8;
+  margin-bottom: 40px;
+}
+
+.title-area {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.title-area h1 {
+  font-size: 2rem;
+}
+
+.title-area p {
+  font-size: 1.2rem;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  overflow-x: auto; /* 允许横向滚动 */
+}
+
+.card {
+  width: 200px;  /* 调整宽度适应横向布局 */
+  height: 170px;
+  margin-right: 20px; /* 卡片间距 */
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 15px;
+  cursor: pointer;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.card h2 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.card-video {
+  width: 100%;
+  height: 100px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+}
+
+.modal video {
+  max-width: 90%;
+  max-height: 80%;
+}
+
+.close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 2rem;
+  color: white;
+  cursor: pointer;
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- 导航栏 -->
+  <nav class="navbar">
+    <ul>
+      <li><a href="#animation1">动画1</a></li>
+      <li><a href="#animation2">动画2</a></li>
+      <li><a href="#animation3">动画3</a></li>
+      <!-- 添加更多动画链接 -->
+    </ul>
+  </nav>
+
+  <div class="container">
+    <!-- 背景区域 -->
+    <div class="background">
+      <div class="overlay"></div>
+    </div>
+
+    <!-- 动画1 -->
+    <section id="animation1" class="animation-section">
+      <div class="title-area">
+        <h1>动画1</h1>
+        <p>作者: 动画1作者</p>
+      </div>
+      <div class="timeline">
+        <div class="card">
+          <div class="card-content">
+            <h2>第1集</h2>
+            <video class="card-video" src="your-video-url.mp4" controls></video>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+            <h2>第2集</h2>
+            <video class="card-video" src="your-video-url.mp4" controls></video>
+          </div>
+        </div>
+        <!-- 更多卡片 -->
+      </div>
+    </section>
+
+    <!-- 动画2 -->
+    <section id="animation2" class="animation-section">
+      <div class="title-area">
+        <h1>动画2</h1>
+        <p>作者: 动画2作者</p>
+      </div>
+      <div class="timeline">
+        <div class="card">
+          <div class="card-content">
+            <h2>第1集</h2>
+            <video class="card-video" src="your-video-url.mp4" controls></video>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+            <h2>第2集</h2>
+            <video class="card-video" src="your-video-url.mp4" controls></video>
+          </div>
+        </div>
+        <!-- 更多卡片 -->
+      </div>
+    </section>
+
+    <!-- 动画3 -->
+    <section id="animation3" class="animation-section">
+      <div class="title-area">
+        <h1>动画3</h1>
+        <p>作者: 动画3作者</p>
+      </div>
+      <div class="timeline">
+        <div class="card">
+          <div class="card-content">
+            <h2>第1集</h2>
+            <video class="card-video" src="your-video-url.mp4" controls></video>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+            <h2>第2集</h2>
+            <video class="card-video" src="your-video-url.mp4" controls></video>
+          </div>
+        </div>
+        <!-- 更多卡片 -->
+      </div>
+    </section>
+
+    <!-- 更多动画 -->
+  </div>
+
+  <!-- 放大视频的模态框 -->
+  <div id="video-modal" class="modal">
+    <span class="close">&times;</span>
+    <video id="modal-video" controls></video>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>主食-雯淇漫画库</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f4f4f4;
+    color: #333;
+    padding: 20px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #00244b;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    font-size: 24px;
+}
+
+header input {
+    width: 200px;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+}
+
+main {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.comic-card {
+    background-color: white;
+    width: 200px;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+.comic-card img {
+    width: 100%;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.comic-card h3 {
+    margin: 10px 0 5px;
+    font-size: 18px;
+}
+
+.comic-card p {
+    font-size: 14px;
+    color: #666;
+    margin: 5px 0;
+}
+
+.comic-card .inspiration {
+    font-style: italic;
+    color: #888;
+}
+
+.like-button {
+    background-color:  #022b56;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px;
+    transition: background-color 0.2s;
+}
+
+.like-button:hover {
+    background-color: #1b0061a3;
+}
+
+.like-count {
+    margin-left: 5px;
+    font-weight: bold;
+}
+
+.comic-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>漫画库</h1>
+        <input type="text" id="search" placeholder="搜索漫画..." />
+    </header>
+    
+    <main id="comic-container">
+        <!-- 漫画卡片示例 1 -->
+        <div class="comic-card">
+            <a href="https://example.com/comic1" target="_blank">
+                <img src="https://via.placeholder.com/200x300" alt="漫画封面">
+            </a>
+            <h3>《叫姐姐》</h3>
+            <p>作者：影子｜L-shadow-</p>
+            <p class="inspiration">灵感提供者：瓜子</p>
+            <button class="like-button">❤️ 点赞 <span class="like-count">0</span></button>
+        </div>
+
+        <!-- 漫画卡片示例 2 -->
+        <div class="comic-card">
+            <a href="https://example.com/comic2" target="_blank">
+                <img src="https://via.placeholder.com/200x300" alt="漫画封面">
+            </a>
+            <h3>《漫画标题 2》</h3>
+            <p>作者：作者名2</p>
+            <p class="inspiration">灵感提供者：李四</p>
+            <button class="like-button">❤️ 点赞 <span class="like-count">0</span></button>
+        </div>
+
+        <!-- 漫画卡片示例 3 -->
+        <div class="comic-card">
+            <a href="https://example.com/comic3" target="_blank">
+                <img src="https://via.placeholder.com/200x300" alt="漫画封面">
+            </a>
+            <h3>《漫画标题 3》</h3>
+            <p>作者：作者名3</p>
+            <p class="inspiration">灵感提供者：王五</p>
+            <button class="like-button">❤️ 点赞 <span class="like-count">0</span></button>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
+<script>
+const searchInput = document.getElementById('search');
+const comicCards = document.querySelectorAll('.comic-card');
+
+// 搜索功能
+searchInput.addEventListener('keyup', () => {
+    const searchText = searchInput.value.toLowerCase();
+    
+    comicCards.forEach(card => {
+        const title = card.querySelector('h3').innerText.toLowerCase();
+        const author = card.querySelector('p').innerText.toLowerCase();
+        const inspiration = card.querySelector('.inspiration').innerText.toLowerCase();
+
+        if (title.includes(searchText) || author.includes(searchText) || inspiration.includes(searchText)) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+});
+
+// 点赞功能
+const likeButtons = document.querySelectorAll('.like-button');
+
+likeButtons.forEach(button => {
+    const comicId = button.closest('.comic-card').getAttribute('data-comic-id');
+    const likeCount = button.querySelector('.like-count');
+
+    // 检查localStorage是否已记录该漫画的点赞状态
+    const liked = localStorage.getItem(`liked-${comicId}`);
+
+    if (liked) {
+        // 如果已点赞，禁用点赞按钮，并显示当前点赞数
+        button.disabled = true;
+        likeCount.innerText = localStorage.getItem(`likeCount-${comicId}`);
+    }
+
+    // 为点赞按钮添加点击事件
+    button.addEventListener('click', () => {
+        if (!liked) {
+            // 更新点赞数
+            let count = parseInt(likeCount.innerText);
+            count += 1;
+            likeCount.innerText = count;
+
+            // 将点赞数和状态存储到localStorage
+            localStorage.setItem(`liked-${comicId}`, 'true');
+            localStorage.setItem(`likeCount-${comicId}`, count);
+
+            // 禁用点赞按钮，防止多次点赞
+            button.disabled = true;
+        }
+    });
+});
+
+
+</script>

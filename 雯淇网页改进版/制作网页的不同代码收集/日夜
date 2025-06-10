@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Day/Night Mode Switch</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        :root.darkmode {
+            --text-color: #fff;
+            --background-color: #333;
+            --button-bg-color: #fff;
+            --button-text-color: #333;
+        }
+
+        :root {
+            background-color: var(--background-color, #fff);
+            color: var(--text-color, #333);
+        }
+
+        .mode-switch {
+            display: inline-block;
+            padding: 10px 20px;
+            cursor: pointer;
+            border: 1px solid #333;
+            background-color: var(--button-bg-color, #333);
+            color: var(--button-text-color, #fff);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .mode-switch:hover {
+            background-color: var(--text-color);
+            color: var(--background-color);
+        }
+    </style>
+</head>
+
+<body>
+   
+    <button class="mode-switch" id="modeSwitch">Switch Mode</button>
+
+    <script>
+        const modeSwitchButton = document.getElementById('modeSwitch');
+        let isNightMode = false;
+
+        modeSwitchButton.addEventListener('click', () => {
+            isNightMode = !isNightMode;
+            applyMode();
+        });
+
+        function applyMode() {
+            document.documentElement.classList.toggle('darkmode');
+            if (isNightMode) {
+                modeSwitchButton.textContent = 'Switch to Day Mode';
+            } else {
+                modeSwitchButton.textContent = 'Switch to Night Mode';
+            }
+        }
+    </script>
+</body>
+
+</html>
+
+</html>

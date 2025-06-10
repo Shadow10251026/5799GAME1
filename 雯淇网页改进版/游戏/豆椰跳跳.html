@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>豆椰跳跳</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        #gameContainer {
+            width: 100%;
+            height: 200px;
+            top: 250px;
+            background-color: #18181a;
+            position: relative;
+            overflow: hidden;
+            background-image: url(../img/星空.png);
+            background-size: cover;
+            background-repeat: no-repeat;
+            transition: background-color 1s ease, background-image 1s ease;
+        }
+
+
+        #score {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 20px;
+            color: rgb(255, 255, 255);
+        }
+
+        .dino {
+            position: absolute;
+            bottom: 0;
+            left: 50px;
+            width: 40px;
+            height: 40px;
+            background-image: url(../gif/土豆跑酷.gif);
+            background-size: contain;
+            border-radius: 5px;
+        }
+
+        .dino2 {
+            width: 40px;
+            height: 40px;
+            background-image: url(../gif/椰奶.gif);
+            /* 为小恐龙1号选择一个颜色 */
+            background-size: contain;
+            position: absolute;
+            bottom: 0;
+            left: 90px;
+            /* 初始位置相对于原始小恐龙 */
+            transition: left 0.5s ease-out;
+            /* 平滑过渡动画 */
+        }
+
+        @keyframes run {
+            0% {
+                background-position: 0;
+            }
+
+            25% {
+                background-position: -40px;
+            }
+
+            50% {
+                background-position: -80px;
+            }
+
+            75% {
+                background-position: -120px;
+            }
+
+            100% {
+                background-position: 0;
+            }
+        }
+
+
+
+
+
+
+
+
+
+        .obstacle {
+            position: absolute;
+            bottom: 0;
+
+            background-size: contain;
+            border-radius: 5px;
+            background-repeat: no-repeat;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #restartBtn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color:#3a477a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .specialMessage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 36px;
+            font-weight: bold;
+            color: #3A506B;
+            /* 深蓝色马卡龙 */
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            animation: fadeInOut 3s ease-in-out;
+            z-index: 10;
+            /* 保证消息在最上层 */
+        }
+
+        @keyframes fadeInOut {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -60%);
+            }
+
+            25% {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+
+            75% {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -40%);
+            }
+        }
+
+        #highScoreDisplay {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #3A506B;
+            /* 深蓝色马卡龙 */
+            background: rgba(255, 255, 255, 0.8);
+            padding: 5px 10px;
+            border-radius: 8px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+            /* 确保显示在最上层 */
+        }
+    </style>
+</head>
+
+<body>
+    <div id="gameContainer">
+        <div id="score">得分: <span id="scoreValue">0</span></div>
+        <div id="dino" class="dino"></div>
+        <div id="obstacle" class="obstacle"></div>
+        <button id="restartBtn" class="hidden">重新开始</button>
+
+        <div id="highScoreDisplay">最高分: 0</div>
+
+
+    </div>
+    <script src="game.js"></script>
+</body>
+
+</html>
+
+
+<script>
+    let score = 0;
+    let isJumping = false;
+    let gameOver = false;
+    const dino = document.getElementById('dino');
+    const scoreValue = document.getElementById('scoreValue');
+    const restartBtn = document.getElementById('restartBtn');
+    let obstacles = []; // 存储所有障碍物的数组
+
+    // 游戏的主循环
+    function gameLoop() {
+        if (gameOver) return;
+
+        // 增加得分
+        score += 1;
+        scoreValue.textContent = score;
+
+        // 移动并检查障碍物
+        moveObstacles();
+
+        // 继续游戏
+        requestAnimationFrame(gameLoop);
+    }
+
+
+    // 随机生成深蓝色马卡龙色系
+    function getRandomDarkBluePastelColor() {
+        const darkBluePastelColors = ['#ffff']; // 深蓝色马卡龙色系
+        return darkBluePastelColors[Math.floor(Math.random() * darkBluePastelColors.length)];
+    }
+
+    // 定期生成新障碍物------------------
+
+
+    function createObstacle() {
+        const obstacle = document.createElement('div');
+        obstacle.classList.add('obstacle'); // 为障碍物添加类名以便样式控制
+
+        // 设置随机大小和深蓝色马卡龙颜色
+        const length = Math.random() * 30 + 10; // 随机长度：40px ~ 100px
+        const height = Math.random() * 50 + 10; // 随机高度：30px ~ 80px
+        obstacle.style.width = length + "px"; // 动态宽度
+        obstacle.style.height = height + "px"; // 动态高度
+        obstacle.style.backgroundColor = getRandomDarkBluePastelColor(); // 设置深蓝色马卡龙色系
+        obstacle.style.position = "absolute";
+        obstacle.style.bottom = "0px";
+        obstacle.style.left = "100%"; // 从屏幕右侧生成
+
+        document.getElementById('gameContainer').appendChild(obstacle);
+        obstacles.push(obstacle);
+
+        if (!gameOver) {
+            setTimeout(createObstacle, Math.random() * 3500 + 1700); // 每隔 1-2.5 秒生成一个障碍物
+
+        }
+    }
+
+    // 障碍物移动并检测碰撞
+    function moveObstacles() {
+        obstacles.forEach((obstacle, index) => {
+            let obstacleLeft = parseInt(window.getComputedStyle(obstacle).getPropertyValue("left"));
+
+            // 障碍物移出屏幕后删除
+            if (obstacleLeft <= 0) {
+                document.getElementById('gameContainer').removeChild(obstacle);
+                obstacles.splice(index, 1);
+            } else {
+                obstacle.style.left = obstacleLeft - 5 + "px"; // 向左移动
+            }
+
+            // 检查碰撞
+            checkCollision(obstacle);
+        });
+    }
+
+
+    // 检查小恐龙与某个障碍物的碰撞
+    function checkCollision(obstacle) {
+        const dinoRect = dino.getBoundingClientRect();
+        const obstacleRect = obstacle.getBoundingClientRect();
+        if (
+            dinoRect.left < obstacleRect.right &&
+            dinoRect.right > obstacleRect.left &&
+            dinoRect.top < obstacleRect.bottom &&
+            dinoRect.bottom > obstacleRect.top
+        ) {
+            gameOver = true;
+            showGameOver();
+        }
+    }
+
+    // 游戏结束处理
+    function showGameOver() {
+        const finalScore = score;
+
+        scoreValue.textContent = score;
+
+        // 清理所有障碍物
+        obstacles.forEach(obstacle => {
+            obstacle.remove();
+        });
+        obstacles = [];
+
+        restartBtn.classList.remove('hidden');
+        restartBtn.addEventListener('click', restartGame);
+
+
+        // 初始化历史最高分
+        let highScore = localStorage.getItem('highScore') ? parseInt(localStorage.getItem('highScore')) : 0;
+
+        // 显示初始最高分
+        document.getElementById('highScoreDisplay').textContent = `最高分: ${highScore}`;
+
+
+
+        if (finalScore > highScore) {
+            highScore = finalScore;
+            document.getElementById('highScoreDisplay').textContent = `最高分: ${highScore}`;
+            localStorage.setItem('highScore', highScore); // 将最高分存储到 localStorage
+        }
+
+    }
+
+    // 重新开始游戏
+    function restartGame() {
+        score = 0;
+        gameOver = false;
+        scoreValue.textContent = score;
+        dino.style.bottom = "0px";
+        restartBtn.classList.add('hidden');
+        createObstacle(); // 开始生成障碍物
+        gameLoop(); // 开始游戏循环
+
+
+
+        gameContainer.style.transition = "none"; // 去除过渡效果，避免闪烁
+        gameContainer.style.backgroundColor = "#18181a"; // 默认背景颜色
+        gameContainer.style.backgroundImage = "url('../img/星空.png')"; // 移除背景图片
+      
+       
+       
+
+
+
+
+        setTimeout(() => {
+            gameContainer.style.transition = "background-color 1s ease, background-image 1s ease"; // 恢复过渡效果
+        }, 100); // 延迟设置过渡效果，避免立即生效
+    }
+
+
+    // 跳跃函数
+    function jump() {
+        if (!isJumping) {
+            isJumping = true;
+            let jumpHeight = 0;
+            let jumpInterval = setInterval(() => {
+                if (jumpHeight >= 130) {
+                    clearInterval(jumpInterval);
+                    fall();
+                } else {
+                    jumpHeight += 5;
+                    dino.style.bottom = jumpHeight + "px";
+                }
+            }, 20);
+        }
+    }
+
+    // 下落函数
+    function fall() {
+        let fallHeight = parseInt(dino.style.bottom);
+        let fallInterval = setInterval(() => {
+            if (fallHeight <= 0) {
+                clearInterval(fallInterval);
+                isJumping = false;
+            } else {
+                fallHeight -= 5;
+                dino.style.bottom = fallHeight + "px";
+            }
+        }, 20);
+    }
+
+    // 监听空格键跳跃
+    document.addEventListener('keydown', function (event) {
+        if (event.code === 'Space') {
+            jump();
+        }
+    });
+
+
+
+
+
+
+    // 游戏的主循环
+    function gameLoop() {
+        if (gameOver) return;
+
+        // 增加得分
+        score += 1;
+        scoreValue.textContent = score;
+
+        // 检查得分事件
+        if (score === 1000) {
+            showSpecialMessage("GOOD JOB!");
+        } else if (score === 3000) {
+            showSpecialMessage("太棒了！土豆快要追上妈妈们了！");
+        } else if (score === 4000 && !dino2) {
+            createSecondDino(); // 创建小恐龙1号
+        } else if (score === 2500) {
+            changeGameTheme(); // 调用更改背景颜色和图片的函数
+        } else if (score === 5000) {
+            changeGameTheme2(); // 切换背景和障碍物颜色
+        }
+        if (score === 10000) {
+            changeBackgroundImage(); // 达到10000分时增加背景图片
+        }
+
+
+        // 移动并检查障碍物
+        moveObstacles();
+
+        // 继续游戏
+        requestAnimationFrame(gameLoop);
+    }
+
+    // 显示得分提示消息
+    function showSpecialMessage(message) {
+        const specialMessage = document.createElement('div');
+        specialMessage.classList.add('specialMessage');
+        specialMessage.textContent = message;
+        document.getElementById('gameContainer').appendChild(specialMessage);
+
+        // 设置 3 秒后移除消息
+        setTimeout(() => {
+            specialMessage.remove();
+        }, 3000);
+    }
+
+
+
+
+
+
+
+
+
+    let dino1 = document.getElementById('dino'); // 原小恐龙
+    let dino2 = null; // 小恐龙1号（初始化为空）
+    let isJumping2 = false; // 小恐龙1号的跳跃状态
+    let jumpHeight2 = 0; // 小恐龙1号的跳跃高度
+
+
+
+    // ------------------------------------------------------------------------创建第二只小恐龙
+    function createSecondDino() {
+        dino2 = document.createElement('div');
+        dino2.classList.add('dino2');
+        dino2.style.position = 'absolute';
+        dino2.style.bottom = '0px';
+        dino1.style.left = '63px';  // 小恐龙1号稍微在原小恐龙前面
+        dino2.style.width = '40px';
+        dino2.style.height = '40px';
+        document.getElementById('gameContainer').appendChild(dino2); // 添加到页面
+
+    }
+
+
+
+    // 跳跃函数，增加小恐龙1号同步跳跃
+    function jump() {
+        if (!isJumping) {
+            isJumping = true;
+            let jumpHeight = 0; // 原小恐龙的跳跃高度
+            const maxJumpHeight = 150; // 增加跳跃高度，设置为150像素
+            const jumpSpeed = 7; // 每次跳跃的增量
+
+            let jumpInterval = setInterval(() => {
+                if (jumpHeight >= maxJumpHeight) {
+                    clearInterval(jumpInterval);
+                    fall(); // 达到最大高度后开始下降
+                } else {
+                    jumpHeight += jumpSpeed;
+                    dino1.style.bottom = jumpHeight + "px"; // 原小恐龙跳跃
+                    if (dino2) {
+                        jumpHeight2 += jumpSpeed; // 小恐龙1号的跳跃
+                        dino2.style.bottom = jumpHeight2 + "px"; // 小恐龙1号同步跳跃
+                    }
+                }
+            }, 17); // 控制跳跃速度
+        }
+    }
+
+    // 下落函数，增加小恐龙1号的下落
+    function fall() {
+        let fallHeight = parseInt(dino1.style.bottom);
+        const fallSpeed = 5; // 每次下降的减量
+
+        let fallInterval = setInterval(() => {
+            if (fallHeight <= 0) {
+                clearInterval(fallInterval);
+                isJumping = false; // 标记跳跃结束
+                dino1.style.bottom = "0px"; // 重置原小恐龙底部位置
+                if (dino2) {
+                    jumpHeight2 = 0; // 小恐龙1号的跳跃重置
+                    dino2.style.bottom = "0px"; // 重置小恐龙1号底部位置
+                }
+            } else {
+                fallHeight -= fallSpeed;
+                dino1.style.bottom = fallHeight + "px";
+                if (dino2) {
+                    jumpHeight2 -= fallSpeed; // 小恐龙1号同步下降
+                    dino2.style.bottom = jumpHeight2 + "px";
+                }
+            }
+        }, 15); // 控制下降速度
+    }
+
+
+
+
+    // 初始化历史最高分
+    let highScore = localStorage.getItem('highScore') ? parseInt(localStorage.getItem('highScore')) : 0;
+
+    // 显示初始最高分
+    document.getElementById('highScoreDisplay').textContent = `最高分: ${highScore}`;
+
+
+
+
+    //更改背景2500------------------------------
+
+
+    function changeGameTheme() {
+        // 更改背景颜色
+        const gameContainer = document.getElementById('gameContainer');
+        gameContainer.style.backgroundColor = '#323c58'; // 雾霾蓝
+
+        // 更改障碍物颜色
+        const obstacles = document.querySelectorAll('.obstacle'); // 查询所有障碍物
+        obstacles.forEach(obstacle => {
+            obstacle.style.backgroundColor = '#B98A82'; // 橙红马卡龙色
+        });
+
+        // 提示主题已更改
+        showSpecialMessage("快白天了！");
+    }
+
+
+    //5000
+
+    function changeGameTheme2() {
+        // 更改背景颜色
+        const gameContainer = document.getElementById('gameContainer');
+        gameContainer.style.backgroundColor = '#B4A29E'; // 莫兰迪橘色
+
+        // 更改障碍物颜色
+        const obstacles = document.querySelectorAll('.obstacle'); // 查询所有障碍物
+        obstacles.forEach(obstacle => {
+            obstacle.style.backgroundColor = '#013E41'; // 橙红马卡龙色
+        });
+
+        // 提示主题已更改
+        showSpecialMessage("太阳升起来了！离妈妈们不远了！");
+    }
+
+
+
+    //10000
+
+    function changeBackgroundImage() {
+        gameContainer.style.backgroundImage = "url('../png/夜晚城市.png')"; // 替换为实际图片地址
+        gameContainer.style.backgroundSize = "cover"; // 确保背景图片充满容器
+        gameContainer.style.backgroundPosition = "center"; // 居中显示背景
+    }
+
+
+
+
+
+    // 启动游戏
+    createObstacle();
+    gameLoop();
+
+
+</script>

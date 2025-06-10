@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>漫剧网页设计</title>
+    <style>
+        /* 基本样式 */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f4f4f9; /* 背景色稍微柔和一些 */
+            color: #333;
+        }
+
+        /* 导航栏样式 */
+        nav {
+            background-color: #2c3e50; /* 深色背景 */
+            color: white;
+            padding: 15px 30px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #ecf0f1;
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-menu li {
+            margin-left: 25px;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1em;
+            transition: color 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            color: #3498db; /* 悬浮时颜色 */
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: #34495e;
+            list-style: none;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-menu a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 8px;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: #2c3e50;
+        }
+
+        /* 动画视频封面 */
+        .cover {
+            position: relative;
+            height: 70vh;
+            background-color: #ffffff;
+            color: white;
+            overflow: hidden;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .background-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-info {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            color: white;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 70%;
+            height: 70px;
+            transition: transform 0.3s ease;
+        }
+
+        .video-info:hover {
+            transform: translateY(-10px);
+        }
+
+        .video-info h2 {
+            font-size: 2.5em;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .video-info p {
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+
+        /* 每个漫剧的Section */
+        section {
+            padding: 40px 20px;
+            margin-top: 80px;
+            background-color: #fff;
+            border-bottom: 1px solid #e1e1e1;
+        }
+
+        section h2 {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        section p {
+            font-size: 0.1.1em;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        section a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        section a:hover {
+            color: #2980b9;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .video-info h2 {
+                font-size: 2em;
+            }
+
+            .video-info p {
+                font-size: 1.1em;
+            }
+
+            .nav-menu {
+                flex-direction: column;
+                align-items: flex-start;
+                margin-top: 20px;
+            }
+
+            .nav-menu li {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .video-info h2 {
+                font-size: 1.5em;
+            }
+
+            .video-info p {
+                font-size: 1em;
+            }
+
+            .cover {
+                height: 50vh;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 导航栏 -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">漫剧网</div>
+            <ul class="nav-menu">
+                <li><a href="#">首页</a></li>
+                <li class="dropdown">
+                    <a href="#">漫剧目录</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#section1">漫剧1</a></li>
+                        <li><a href="#section2">漫剧2</a></li>
+                        <li><a href="#section3">漫剧3</a></li>
+                        <li><a href="#section4">漫剧4</a></li>
+                        <li><a href="#section5">漫剧5</a></li>
+                        <li><a href="#section6">漫剧6</a></li>
+                        <li><a href="#section7">漫剧7</a></li>
+                        <li><a href="#section8">漫剧8</a></li>
+                        <li><a href="#section9">漫剧9</a></li>
+                        <li><a href="#section10">漫剧10</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 动画视频封面 -->
+    <section class="cover">
+        <div class="video-container">
+            <video autoplay loop muted class="background-video">
+                <source src="../mp/雯淇小妈动画1.mp4" type="video/mp4">
+                <source src="../mp/雯淇小妈动画1.webm" type="video/webm">
+                <source src="../mp/雯淇小妈动画1.ogg" type="video/ogg">
+                您的浏览器不支持视频标签。
+            </video>
+            <div class="video-info">
+                <h2>冲喜</h2>
+                <p>民国时期，小妈和小姐的故事</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 漫剧 Sections -->
+    <section id="section1">
+        <h2>漫剧1</h2>
+        <p>内容简介1</p>
+        <a href="#">查看更多</a>
+    </section>
+    <section id="section2">
+        <h2>漫剧2</h2>
+        <p>内容简介2</p>
+        <a href="#">查看更多</a>
+    </section>
+    <section id="section3">
+        <h2>漫剧3</h2>
+        <p>内容简介3</p>
+        <a href="#">查看更多</a>
+    </section>
+    <!-- 继续到漫剧10 -->
+
+    <script src="script.js"></script>
+</body>
+</html>

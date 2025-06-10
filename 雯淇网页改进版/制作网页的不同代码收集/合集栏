@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>右侧合集栏</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* 页面背景和布局 */
+/* 页面背景和布局 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* 小球按钮样式 */
+.collection-btn {
+    position: fixed;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    background-color: #4CAF50;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    z-index: 1000;
+    transition: transform 0.3s;
+}
+
+/* 合集栏样式 */
+.collection-bar {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #333;
+    width: 300px;
+    max-height: 600px;
+    display: none;
+    padding: 10px;
+    color: white;
+    box-shadow: -5px 5px 15px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    overflow-y: auto;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* iframe 容器样式 */
+.iframe-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* iframe 样式：初始位置从小球下方 */
+iframe {
+    border: none;
+    opacity: 0;  /* 初始隐藏 */
+    transform: translateY(50px); /* 从小球下方开始 */
+    transition: opacity 0.5s, transform 0.5s; /* 动画效果 */
+}
+
+/* 按钮点击时的动画 */
+.collection-btn.open {
+    transform: translateY(-50%) rotate(180deg);
+}
+
+
+    </style>
+</head>
+<body>
+
+    <!-- 小球按钮 -->
+    <div id="collectionButton" class="collection-btn" onclick="toggleCollection()"></div>
+
+    <!-- 合集栏内容 -->
+    <div id="collection" class="collection-bar">
+        <div id="iframeContainer" class="iframe-container">
+            <iframe src="https://www.example.com" width="300" height="200"></iframe>
+            <iframe src="https://www.example2.com" width="300" height="200"></iframe>
+            <iframe src="https://www.example3.com" width="300" height="200"></iframe>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+<script>
+    // 切换合集栏显示或隐藏
+function toggleCollection() {
+    const collectionBar = document.getElementById('collection');
+    const collectionButton = document.getElementById('collectionButton');
+    
+    // 切换合集栏的显示状态
+    if (collectionBar.style.display === 'none' || collectionBar.style.display === '') {
+        collectionBar.style.display = 'block';
+        collectionBar.style.opacity = '1';  // 显示合集栏时，渐变效果
+        collectionButton.classList.add('open');
+        
+        // 使 iframe 从小球下方衍生并逐渐显示
+        const iframes = document.querySelectorAll('iframe');
+        iframes.forEach((iframe, index) => {
+            setTimeout(() => {
+                iframe.style.opacity = '1';   // 逐渐显示
+                iframe.style.transform = 'translateY(0)';  // 向上移动到正常位置
+            }, index * 200);  // 每个 iframe 延迟一段时间衍生
+        });
+    } else {
+        collectionBar.style.opacity = '0';  // 隐藏合集栏时，渐变效果
+        setTimeout(() => {
+            collectionBar.style.display = 'none';
+        }, 300); // 在渐变结束后隐藏合集栏
+        collectionButton.classList.remove('open');
+        
+        // 隐藏 iframe 元素
+        const iframes = document.querySelectorAll('iframe');
+        iframes.forEach((iframe) => {
+            iframe.style.opacity = '0';  // 隐藏
+            iframe.style.transform = 'translateY(50px)';  // 移动到下方
+        });
+    }
+}
+
+</script>

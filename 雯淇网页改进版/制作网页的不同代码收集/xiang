@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Business Card</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            width: 100%;
+            height: 100%;
+            max-width: 2000px;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Wave with increased amplitude */
+        .wave {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 250px; /* Larger wave height */
+            background: linear-gradient(to bottom, #2352a460, #ffffff90);
+            background-image: url(../img/雯淇雪地.png);
+            clip-path: polygon(0 0, 100% 0, 100% 70%, 0 100%);
+            background-size: cover;
+
+        }
+
+
+        .wave img {
+            width: 100%;
+            height: fixed;
+            display: block;
+        }
+
+        .wave::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, rgba(4, 33, 130, 0.631), rgb(255, 255, 255));
+            pointer-events: none; /* Ensures the image remains clickable */
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .avatar-frame {
+            width: 20vw;
+            height: 20vw;
+            max-width: 150px;
+            max-height: 150px;
+            border-radius: 50%;
+            border: 5px solid #2a5298;
+            margin-bottom: 20px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .avatar-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .name {
+            font-size: 5vw;
+            color: #2a5298;
+            margin-bottom: 10px;
+        }
+
+        .tags {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            padding: 6px 15px;
+            background-color: #c39870;
+            color: white;
+            border-radius: 20px;
+            font-size: 3vw;
+        }
+
+        .description {
+            font-size: 3vw;
+            color: #333;
+            margin-bottom: 20px;
+            max-width: 90%;
+        }
+
+        .small-tags {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .small-tag {
+            padding: 5px 15px;
+            background-color: #173f84;
+            color: white;
+            border-radius: 20px;
+            font-size: 2.5vw;
+        }
+
+        .about-animation {
+            position:fixed;
+            top: 3%;
+            left: 0px;
+            font-size: 14vw;
+            color: white;
+            font-weight: bold;
+            animation: slideIn 3s forwards;
+            
+        }
+
+        @keyframes slideIn {
+            0% {
+                left: -100%;
+            }
+
+            100% {
+                left: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <div class="wave"></div>
+        <div class="about-animation">ABOUT小厨房</div>
+
+        <div class="content">
+            <div class="avatar-frame">
+                <img src="../img/叶子画头像.jpg" alt="Avatar">
+            </div>
+            <div class="name">影子</div>
+            <div class="tags">
+                <div class="tag">请好好选课-影子版</div>
+                <div class="tag">L-shadow</div>
+            </div>
+            <div class="description">
+                Hello雯淇妈妈们, 这里影子, 一个24年3月入坑的委屈鬼, 偶尔产产小粮。
+                <p><strong>雯淇妈妈的小厨房</strong>致力于提供WQG优秀的精神食粮,
+                    产出内容的质量是我们一直所追求的目标。我们相信在围裙妈妈的小厨房里您一定可以找寻到不一样的快乐。
+            </div>
+            <div class="small-tags">
+                <div class="small-tag">小说</div>
+                <div class="small-tag">漫画</div>
+                <div class="small-tag">漫剧</div>
+                <div class="small-tag">动画</div>
+                <div class="small-tag">游戏</div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
